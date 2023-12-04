@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Uncategorized &#8211; GroundWork CSS</title>
+	<atom:link href="/category/uncategorized/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description></description>
+	<lastBuildDate>Mon, 04 Dec 2023 18:31:21 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.4.1</generator>
+	<item>
+		<title>Adding value to Buildap</title>
+		<link>/groundwork/</link>
+					<comments>/groundwork/#respond</comments>
+		
+		<dc:creator><![CDATA[test]]></dc:creator>
+		<pubDate>Mon, 04 Dec 2023 18:26:43 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">/?p=32</guid>
+
+					<description><![CDATA[Being an excelent idea and and solution Buildap still have problem with popularity because it does not easy integrate into the development technologies particularily Java development. It is important to make it be easy usable from within the Java code. Limitation of Buildap approach The idea is great &#8211; imitate electronic circuit board development approach [&#8230;]]]></description>
+										<content:encoded><![CDATA[<p>Being an excelent idea and and solution Buildap still have problem with popularity because it does not easy integrate into the development technologies particularily Java development. It is important to make it be easy usable from within the Java code.</p>
+<p>Limitation of Buildap approach</p>
+<p>The idea is great &#8211; imitate electronic circuit board development approach in software development, but does electronics fit into software world.</p>
+<p>The nature of electronics is asynchronous while software has both synchronous and asynchronous behavior.</p>
+<p>Buildap lacks in synchronous behavior, which is natural to software those it creates obstacle for using it in real day by day tasks.</p>
+<p>Buildap value</p>
+<p>The value of technology is in easiness of usage with other technologies particularly from within the Java code. For example simple “Add” part in Buildap which takes two parameters as input to inpin and fires result as outpin is still difficult to use from Java code, not saying about more complex parts.</p>
+<p>Popular frameworks gain popularity not by providing beauty solutions but by providing value to the end user. Like Spring framework it is easy to use it from within Java code, it can integrate both way and does not impose itself to business Java code building everything via interfaces.</p>
+<p>I advocate usage of Buildap from within Java code and vice versa those providing value to each other currently Java codes can be used in Buildap environment but Buildap usage from Java is not that easy.</p>
+<p>Proposed usage scenarios can be:</p>
+<p>public static void main(String[] args) {</p>
+<p>int arg1 = 5;</p>
+<p>int arg2 = 4;</p>
+<p>int sum = 0;</p>
+<p>Part part = BuildapContext.getPart(&#8220;Add&#8221;);</p>
+<p>BuildapEvent be = new BuildapEvent();</p>
+<p>be.addArg(arg1);</p>
+<p>be.addArg(arg2);</p>
+<p>part.addOutPinEventListener(new IOutPinEventListener(){</p>
+<p>public void outPinFired(BuildapEvent be){</p>
+<p>sum = be.getArgAsInt(0);</p>
+<p>System.out.println(&#8220;sum=&#8221;+sum);</p>
+<p>}</p>
+<p>});</p>
+<p>part.fireInpin(&#8220;add&#8221;, be);</p>
+<p>}</p>
+<p>NOTE: This is not real Buildap code, it is proposal but it is also not that convenient usage.</p>
+<p>The problem here is that parts in Buildap does not have named instances and named scopes (or fully qualified names) which makes it difficult first to identify correct Add part because in the Buildap environment there can be several Add parts loaded, assuming that Add part can have a state it is not correct to look for a part by type.</p>
+<p>Proposal: parts need to have instance names/ids and scopes. (as well as access rights desired feature)</p>
+<p>Some inpin and outpins act in synch although there is no notation in Buildap for it. For example Add part has one inpin which takes two arguments and fires outpin whenever it receive arguments for inpin and outpin implicitly related to each other.</p>
+<p>There remains other outpins which are not in synch with any inpin which remain event oriented.</p>
+<p>Proposal: pins which are in synch with each other need a kind of notation to indicate behavior.</p>
+<p>So the code above can be simplified to:</p>
+<p>public static void main(String[] args) {</p>
+<p>int arg1 = 5;</p>
+<p>int arg2 = 4;</p>
+<p>int sum = 0;</p>
+<p>Part part = BuildapContext.getPart(&#8220;add1&#8221;);//named id of Add part</p>
+<p>BuildapEvent be = new BuildapEvent();</p>
+<p>be.addArg(arg1);</p>
+<p>be.addArg(arg2);</p>
+<p>BuildapEvent result = part.fireInOutpin(&#8220;add&#8221;, be);</p>
+<p>sum = result.getArgAsInt(0);</p>
+<p>System.out.println(&#8220;sum=&#8221;+sum);</p>
+<p>}</p>
+<p>Error pin event can be translated to the JavaException then firing part of code will change to</p>
+<p>try {</p>
+<p>BuildapEvent result = part.fireInOutpin(&#8220;add&#8221;, be);</p>
+<p>sum = result.getArgAsInt(0);</p>
+<p>System.out.println(&#8220;sum=&#8221;+sum);</p>
+<p>} catch (BuildapException e) {</p>
+<p>// TODO Auto-generated catch block</p>
+<p>e.printStackTrace();</p>
+<p>}</p>
+<p>For adding value to Buildap there need to be full qualified paths because different independent parts can be used like two SoapClient parts; one in ticket reservation SoapClient stateful part with fully qualified path ticketreservation.soapClient1 and other ordermanagement.soapClient1</p>
+<p>Proposal: It should be possible to work synchronous when pins are not physically in synch but event fired to a given pin will sooner or later definitely produce event from other pin.</p>
+<p>public static void main(String[] args) {</p>
+<p>int arg1 = 5;</p>
+<p>int arg2 = 4;</p>
+<p>int sum = 0;</p>
+<p>Part part = BuildapContext.getPart(&#8220;add1&#8221;);//named id of Add part</p>
+<p>BuildapEvent be = new BuildapEvent();</p>
+<p>be.addArg(arg1);</p>
+<p>be.addArg(arg2);</p>
+<p>Part otherOrSamePart = BuildapContext.getPart(&#8220;xxx&#8221;);//named id of Add part</p>
+<p>try {</p>
+<p>/**</p>
+<p>* this will make hang code in the fireSynchronized(..) method till the result from namedIdOfPin not provided</p>
+<p>*/</p>
+<p>BuildapEvent result = part.fireSynchronized(&#8220;add&#8221;, be, otherOrSamePart.getPin(&#8220;namedIdOfPin&#8221;));</p>
+<p>sum = result.getArgAsInt(0);</p>
+<p>System.out.println(&#8220;sum=&#8221;+sum);</p>
+<p>} catch (BuildapException e) {</p>
+<p>// TODO Auto-generated catch block</p>
+<p>e.printStackTrace();</p>
+<p>}</p>
+<p>}</p>
+<p>Part state:</p>
+<p>A part is not only consuming events and produce events, part has can have state. Sure state can be modified via Buildap events or other type of events, but there is strong similarity of Buildap part with the Java bean and why not part also can have properties, which can be set explicitly.</p>
+<p>Remarks:</p>
+<p>There is strong similarity between Java bean and Buildap part the single and obvious difference is a way of communication Java beans use direct references to each other those ensuring object oriented approach of communication while part uses link (as first class citizen object) to communicate with other parts those ensuring anonymous collaboration between parts those ensuring component oriented approach.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/groundwork/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Test Site &#8211; calling all guinea pigs</title>
+		<link>/test-site-calling-all-guinea-pigs/</link>
+					<comments>/test-site-calling-all-guinea-pigs/#respond</comments>
+		
+		<dc:creator><![CDATA[test]]></dc:creator>
+		<pubDate>Tue, 28 Nov 2023 19:03:24 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">/?p=28</guid>
+
+					<description><![CDATA[Recently, I have been developing a replacement for the Atlas of South Australia . The old Atlas is looking rather long in the tooth (currently AV-IMS + local shapefiles). To this end I have set up a test server with ArcIMS 3.1, TomCat 3.x, CF5 and SDE (accessed through SA Govt&#8217;s firewall). Feel free to [&#8230;]]]></description>
+										<content:encoded><![CDATA[<p>Recently, I have been developing a replacement for the Atlas of South Australia . The old Atlas is looking rather long in the tooth (currently AV-IMS + local shapefiles).</p>
+<p>To this end I have set up a test server with ArcIMS 3.1, TomCat 3.x, CF5 and SDE (accessed through SA Govt&#8217;s firewall).</p>
+<p>Feel free to have a look at the test site. To start a mapping session first select a region, then a category (currently all categories point to a testing mapservice). I would be interested to hear any comments of feedback about the mapping interface (I have not worked much on the site&#8217;s start menu interfaces yet).</p>
+<p>The box I am using for testing is a very underspeced PC and I have been getting a few &#8220;ArcIMS Cold Fusion Extension Error&#8221; errors (often a &#8220;refresh map&#8221; fixes things). The good news is the new rack mounted server has arrived and is waiting for me to configure it. The code basis of the mapping interface &#8211; &#8220;MiniMapper&#8221; &#8211; has been running very successfully on my Maps in Minutes application within the SA Govt Intranet for the last 12 months.</p>
+<p>Once you have started a map session. There are three levels on interface (Full, Standard &#8211; the default, and simple). You can switch between each interface by viewing either mm_full_viewer.cfm, mm_standard_viewer.cfm or mm_simple_viewer.cfm.</p>
+<p>Feel free to let me know how you find it &#8211; I have successfully tested using IE5-6, Netscape 6.1-7 and Opera 7.</p>
+<p>Cheers</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/test-site-calling-all-guinea-pigs/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Zoom Box and JSP Admin</title>
+		<link>/groundwork/urldocs/home</link>
+					<comments>/groundwork/urldocs/home#respond</comments>
+		
+		<dc:creator><![CDATA[test]]></dc:creator>
+		<pubDate>Tue, 28 Nov 2023 19:03:08 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">/?p=26</guid>
+
+					<description><![CDATA[I had a strange issue with my previous install of ArcIMS + ColdFusion &#8212; that is, the one that I had _just_ hanging together with Tomcat &#8212; where Coldfusion would run or ArcIMS Administrator would run, but it was impossible to run the two at the same time. I failed to mention that even though [&#8230;]]]></description>
+										<content:encoded><![CDATA[<p>I had a strange issue with my previous install of ArcIMS + ColdFusion &#8212; that is, the one that I had _just_ hanging together with Tomcat &#8212; where Coldfusion would run or ArcIMS Administrator would run, but it was impossible to run the two at the same time. I failed to mention that even though I could pull up a map service under that configuration &#8212; my zoombox JavaScript stopped working.</p>
+<p>That was probably the least of my troubles at the time. But in any case now that I have 4.0.1 + CFMX going together under JRUN the zoombox is now working again.</p>
+<p>Also, I think it is important to note that I am running JSP with CFMX Pro quite happily together &#8212; and I have been under the impression that even if you had JRUN you would have to have CFMX Enterprise to run JSP. Well, not so &#8212; JRUN seems to handle it just fine, thank you &#8212; and I am able to the web based ArcIMS Administrator /esriadmin with no problems. All that was required was registering esriadmin as a web application in the JRUN management console (not much different from CF Administator, and hence a comfortable paradigm) and adding an IIS mapping.</p>
+<p>It seems strange to me that Macromedia has made it seem like we have to have Enterprise to JRUN with servlets and JSP &#8212; I haven&#8217;t had any problems and JRUN handles all port handling behind the scenes (that is, you don&#8217;t have to tack a port number on the end of the domain, everything is going through the default).</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/groundwork/urldocs/home/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>CFMX and ArcIMS 4.0.1 incompatiblity</title>
+		<link>/cfmx-and-arcims-4-0-1-incompatiblity/</link>
+					<comments>/cfmx-and-arcims-4-0-1-incompatiblity/#respond</comments>
+		
+		<dc:creator><![CDATA[test]]></dc:creator>
+		<pubDate>Tue, 28 Nov 2023 19:02:30 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">/?p=24</guid>
+
+					<description><![CDATA[Fred Devault writes: While I believe it may be possible to customize the Tomcat configuration sufficiently to get it working with CFMX Pro and IIS, I&#8217;ve pursued a hunch about a much simpler approach: Skip the addition of any additional Servlet engine (Tomcat, JRun, etc) and simply leverage the existing Servlet capability of CFMX Pro! [&#8230;]]]></description>
+										<content:encoded><![CDATA[<p>Fred Devault writes:</p>
+<p>While I believe it may be possible to customize the Tomcat configuration sufficiently to get it working with CFMX Pro and IIS, I&#8217;ve pursued a hunch about a much simpler approach: Skip the addition of any additional Servlet engine (Tomcat, JRun, etc) and simply leverage the existing Servlet capability of CFMX Pro!</p>
+<p>I&#8217;ve fully tested this approach w/ CFMX Pro using Updaters 2 and 3 and everything is fully functional: standard cfm content including all CFMX Admin pages, ArcIMS Diagnostics and converted 3.1 sites, Flash Remoting w/ CFMX, multiple websites in IIS, etc. No incompatibilities or limitations whilst accessing all concurrently.</p>
+<p>To make ArcIMS 4.0.1 connect to CFMX Pro, you simply need to install the standard ArcIMS connector files ([ArcIMS Install Dir]\ArcIMS\Connectors\Servlet) to &#8220;[CFMX Install Dir]\wwwroot\WEB-INF\classes&#8221;. You can do this manually or with the &#8220;Web Server &#8211; Servlet Engine Configuration&#8221; module of the Post-Installation wizard by choosing &#8220;Other&#8221; as your Servlet engine, then browsing to the above path under the CFMX root when specifying the &#8220;Servlet Connector Directory&#8221;.</p>
+<p>I&#8217;ve also done all this with Java 1.4.1_02. If you scan the ESRI docs, it appears that Java builds 1.4.0_01+ were rejected due to bugs with IE5.x, and if you look at the fixes for 1.4.1_02, IE fixes are there. Regardless, I&#8217;ve tested all ArcIMS 4.0.1 tools with this J2SDK and J2RE and have seen no problems (while using IE5.5sp2 for a browser where appropriate).</p>
+<p>Here&#8217;s the details of my tested installation:</p>
+<p>1. Win2K Server Sp3.<br />
+2. IIS 5.0 (installed at build time) w/ Q327696 Security rollup and IIS Lockdown 2.1.<br />
+3. IE 5.5sp2<br />
+4. Sun j2sdk1.4.1_02; Sun j2re1.4.1_02; %JAVA_HOME%=&#8221;C:\Apps\Java\j2sdk1.4.1_02&#8243;.<br />
+5. CFMX Pro, Updater 2 and Updater 3. (I initially tested w/ an Updater 2 install, and just upgraded and re-tested using Updater 3.)<br />
+6. ArcIMS 4.0.1</p>
+<p>Fred DeVault<br />
+Server &amp; Network Engineer</p>
+<p>Please click the link below to view the message in context.<br />
+Conference: ArcIMS Product Discussion Conference<br />
+Forum: ArcIMS: ColdFusion Connector</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/cfmx-and-arcims-4-0-1-incompatiblity/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Code Release &#8211; Flash Satellite Animal Tracking Example</title>
+		<link>/code-release-flash-satellite-animal-tracking-example/</link>
+					<comments>/code-release-flash-satellite-animal-tracking-example/#respond</comments>
+		
+		<dc:creator><![CDATA[test]]></dc:creator>
+		<pubDate>Tue, 28 Nov 2023 19:01:28 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">/?p=22</guid>
+
+					<description><![CDATA[The code for the Flash Based Satellite Animal Tracking and the Spatial Temporal Explorer demo which I showed at MXDU are now available for download online. You need to register first at our portal first simply by entering an e-mail and password (nothing else, no confirmation needed): http://aadc-maps.aad.gov.au/aadc/portal/ Once you have logged in, scroll down [&#8230;]]]></description>
+										<content:encoded><![CDATA[<p>The code for the Flash Based Satellite Animal Tracking and the Spatial Temporal Explorer demo which I showed at MXDU are now available for download online. You need to register first at our portal first simply by entering an e-mail and password (nothing else, no confirmation needed):</p>
+<p>http://aadc-maps.aad.gov.au/aadc/portal/</p>
+<p>Once you have logged in, scroll down to the downloads &#8220;portlet&#8221; (a bit down the page on screen-left) and enter &#8220;Flash&#8221; as the Keyword. The search results will then contain both applications. The code is not as elegant as desired, but it works. In actual fact simply registering on our portal and downloading the files will help us out as we can show our &#8220;superiors&#8221; that people are in fact interested in this type of work. So download today, even if you aren&#8217;t going to bother with it.</p>
+<p>Please note that this is not a Flash Based GIS, but rather a more simple solution for a specific hard-coded area, and as such this approach can work for data that is not stored as spatial objects &#8212; that is, it simply uses straight lat/long numeric coordinates and then the maths are performed for size of the map image. So this type of solution will work for a fixed area and date/time values with numeric coordinates. If you have not seen this application, you can see it here:</p>
+<p>http://aadc-maps.aad.gov.au/aadc/argos/deployments.cfm</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/code-release-flash-satellite-animal-tracking-example/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Flash Based GIS</title>
+		<link>/flash-based-gis/</link>
+					<comments>/flash-based-gis/#respond</comments>
+		
+		<dc:creator><![CDATA[test]]></dc:creator>
+		<pubDate>Tue, 28 Nov 2023 19:01:04 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">/?p=20</guid>
+
+					<description><![CDATA[After getting back from MXDU I have had some correspondence with Paul Hastings in regard to using the Java Connector and his current project of encapsulating ArcIMS functionality within a CFC (using the Java Connector). Paul has also mentioned that he (and his company) is working on a Flash front end that will also be [&#8230;]]]></description>
+										<content:encoded><![CDATA[<p>After getting back from MXDU I have had some correspondence with Paul Hastings in regard to using the Java Connector and his current project of encapsulating ArcIMS functionality within a CFC (using the Java Connector). Paul has also mentioned that he (and his company) is working on a Flash front end that will also be able use this CFC. In my opinion, this is very good way to go with CF + ArcIMS development&#8230;and there is no reason why an alternative CFC could not be developed to use the CFX tag as well. In any case I think that this type of solution would be very much a &#8220;killer app&#8221; for CF + ArcIMS and as such I think that Paul deserves some support on this project from the community and the &#8220;powers that be&#8221;&#8230;how many shopping cart examples are we supposed to be able to digest anyway (my only MXDU gripe) ? I also recognize that the development of such an application is a very valuable asset, but I am not sure if Paul is willing or able to make this work open source&#8230;so it would be good to pool resources in some way&#8230;but I do not know how.</p>
+<p>I believe Robin Hilliard from MM Australia should be looking at this type of solution as well and it may be good to get some of his &#8220;inside&#8221; input. Robin presented a version of a Flash based GIS that used mapinfo files &#8212; whereby he assembled the layers as vectors in Flash. While I believe this approach to be far too heavy for Flash to handle at present, I think Robin could be swayed to look at ArcIMS and the power of ColdFusion to lend a hand (and resources) for this type of application. He had mentioned forming a group to extend his mapinfo Flash project, but I suggest (as did David Whiterod, Stuart Kinninmonth and Tim Donovan) that as a group already formed for the development of web-based GIS products with ColdFusion, he should consider the ArcIMS approach. In any case, it would be good to throw around a few ideas&#8230;</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/flash-based-gis/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>
